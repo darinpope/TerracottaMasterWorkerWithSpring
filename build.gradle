@@ -1,0 +1,99 @@
+apply plugin: 'java'
+apply plugin: 'idea'
+apply plugin: 'eclipse'
+apply plugin: 'application'
+
+springVersion = "3.0.6.RELEASE"
+slf4jVersion = "1.6.1"
+ehcacheVersion = "2.4.5"
+terracottaToolkitVersion = "1.3"
+terracottaCommonVersion = "3.2.0"
+
+repositories {
+  mavenCentral()
+  mavenRepo urls: ["http://www.terracotta.org/download/reflector/releases", "http://www.terracotta.org/download/reflector/snapshots"]
+}
+
+test {
+  jvmArgs = ["-DterracottaConfigUrl=localhost:9510","-Dcom.tc.productkey.path=/Users/dpope/Tools/Terracotta/terracotta-license.key"]
+}
+
+
+task startSearch << {
+  ant.java(classname: 'com.darinpope.SearchMain', fork: true, classpath: "${sourceSets.main.runtimeClasspath.asPath}") {
+    jvmarg(value: "-Drole=none")
+    jvmarg(value: "-DterracottaConfigUrl=localhost:9510")
+    jvmarg(value: "-Dcom.tc.productkey.path=/Users/dpope/Tools/Terracotta/terracotta-license.key")
+  }
+}
+
+task startJob << {
+  ant.java(classname: 'com.darinpope.SchedulerMain', fork: true, classpath: "${sourceSets.main.runtimeClasspath.asPath}") {
+    jvmarg(value: "-Drole=none")
+    jvmarg(value: "-DterracottaConfigUrl=localhost:9510")
+    jvmarg(value: "-Dcom.tc.productkey.path=/Users/dpope/Tools/Terracotta/terracotta-license.key")
+  }
+}
+
+task startScheduler1 << {
+  ant.java(classname: 'com.darinpope.WorkerMain', fork: true, classpath: "${sourceSets.main.runtimeClasspath.asPath}") {
+    jvmarg(value: "-Drole=scheduler")
+    jvmarg(value: "-DqueueName=scheduler1QueueName")
+    jvmarg(value: "-DterracottaConfigUrl=localhost:9510")
+    jvmarg(value: "-Dcom.tc.productkey.path=/Users/dpope/Tools/Terracotta/terracotta-license.key")
+  }
+}
+
+task startWorker1 << {
+  ant.java(classname: 'com.darinpope.WorkerMain', fork: true, classpath: "${sourceSets.main.runtimeClasspath.asPath}") {
+      jvmarg(value: "-Drole=worker")
+      jvmarg(value: "-DnodeName=worker1")
+      jvmarg(value: "-DqueueName=worker1Queue")
+      jvmarg(value: "-DterracottaConfigUrl=localhost:9510")
+      jvmarg(value: "-Dcom.tc.productkey.path=/Users/dpope/Tools/Terracotta/terracotta-license.key")
+  }
+}
+
+task startWorker2 << {
+    ant.java(classname: 'com.darinpope.WorkerMain', fork: true, classpath: "${sourceSets.main.runtimeClasspath.asPath}") {
+        jvmarg(value: "-Drole=worker")
+        jvmarg(value: "-DnodeName=worker2")
+        jvmarg(value: "-DqueueName=worker2Queue")
+        jvmarg(value: "-DterracottaConfigUrl=localhost:9510")
+        jvmarg(value: "-Dcom.tc.productkey.path=/Users/dpope/Tools/Terracotta/terracotta-license.key")
+    }
+}
+
+task startWorker3 << {
+    ant.java(classname: 'com.darinpope.WorkerMain', fork: true, classpath: "${sourceSets.main.runtimeClasspath.asPath}") {
+        jvmarg(value: "-Drole=worker")
+        jvmarg(value: "-DnodeName=worker3")
+        jvmarg(value: "-DqueueName=worker3Queue")
+        jvmarg(value: "-DterracottaConfigUrl=localhost:9510")
+        jvmarg(value: "-Dcom.tc.productkey.path=/Users/dpope/Tools/Terracotta/terracotta-license.key")
+    }
+}
+
+dependencies {
+  compile "org.springframework:spring-core:$springVersion"
+  compile "org.springframework:spring-jdbc:$springVersion"
+  compile "org.springframework:spring-context-support:$springVersion"
+  compile "org.springframework:spring-context:$springVersion"
+  compile "net.sf.ehcache:ehcache-core-ee:$ehcacheVersion"
+  compile "org.terracotta:terracotta-toolkit-$terracottaToolkitVersion-runtime-ee:$terracottaCommonVersion"
+  compile "log4j:log4j:1.2.16"
+  compile "commons-lang:commons-lang:2.6"
+  compile ("com.googlecode.ehcache-spring-annotations:ehcache-spring-annotations:1.1.3") {
+    exclude group:"net.sf.ehcache", module:"ehcache-core", version:"2.2.0"
+  }
+  runtime "net.sf.ehcache:ehcache-terracotta-ee:$ehcacheVersion"
+  runtime "org.slf4j:slf4j-api:$slf4jVersion"
+  runtime "org.slf4j:slf4j-log4j12:$slf4jVersion"
+  runtime "org.hsqldb:hsqldb:2.2.4"
+  testCompile "org.springframework:spring-test:$springVersion"
+  testCompile "junit:junit:4.8.2"
+}
+
+task wrapper(type: Wrapper) {
+  gradleVersion = '1.0-milestone-3'
+}

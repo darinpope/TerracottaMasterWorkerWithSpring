@@ -1,0 +1,68 @@
+<ehcache name="ReferenceDataCacheManager">
+    <terracottaConfig url="${terracottaConfigUrl}" />
+    <cache name="CountryCache"
+        eternal="true"
+        timeToLiveSeconds="0"
+        timeToIdleSeconds="0"
+        maxElementsInMemory="1000"
+        maxElementsOnDisk="0">
+        <terracotta consistency="strong" concurrency="256" />
+    </cache>
+    <cache name="WorkerInfoCache"
+        eternal="true"
+        timeToLiveSeconds="0"
+        timeToIdleSeconds="0"
+        maxElementsInMemory="1000"
+        maxElementsOnDisk="2000">
+        <terracotta consistency="strong" concurrency="256" />
+    </cache>
+    <cache name="SchedulerInfoCache"
+        eternal="true"
+        timeToLiveSeconds="0"
+        timeToIdleSeconds="0"
+        maxElementsInMemory="1000"
+        maxElementsOnDisk="2000">
+        <terracotta consistency="strong" concurrency="256" />
+    </cache>
+    <cache name="MatchCache"
+        eternal="false"
+        maxElementsInMemory="5000"
+        maxElementsOnDisk="125000">
+        <terracotta consistency="strong" concurrency="256" />
+    </cache>
+    <cache name="PlayerCache"
+        eternal="false"
+        maxElementsInMemory="5000"
+        maxElementsOnDisk="125000">
+        <terracotta consistency="strong" concurrency="256" />
+    </cache>
+    <cache name="PlayerMatchCache"
+        eternal="false"
+        maxElementsInMemory="5000"
+        maxElementsOnDisk="500000">
+        <terracotta consistency="strong" concurrency="256" />
+        <searchable keys="false" values="false">
+            <searchAttribute name="playerId" />
+            <searchAttribute name="matchId" />
+        </searchable>
+    </cache>
+    <cache name="JobStatusCache"
+        eternal="false"
+        maxElementsInMemory="5000"
+        maxElementsOnDisk="125000">
+        <cacheWriter
+                writeMode="write-behind"
+                notifyListenersOnException="true"
+                maxWriteDelay="8"
+                rateLimitPerSecond="5"
+                writeCoalescing="false"
+                writeBatching="false"
+                writeBatchSize="20"
+                retryAttempts="2"
+                retryAttemptDelaySeconds="2">
+            <cacheWriterFactory class="com.darinpope.cache.writer.CsvWriterFactory"/>
+        </cacheWriter>
+        <terracotta consistency="strong" concurrency="256" />
+    </cache>
+
+</ehcache>
