@@ -8,6 +8,8 @@ slf4jVersion = "1.6.1"
 ehcacheVersion = "2.4.5"
 terracottaToolkitVersion = "1.3"
 terracottaCommonVersion = "3.2.0"
+terracottaLicenseKey = "/Users/dpope/Tools/Terracotta/terracotta-license.key"
+terracottaConfigUrl = "localhost:9510"
 
 repositories {
   mavenCentral()
@@ -15,23 +17,23 @@ repositories {
 }
 
 test {
-  jvmArgs = ["-DterracottaConfigUrl=localhost:9510","-Dcom.tc.productkey.path=/Users/dpope/Tools/Terracotta/terracotta-license.key"]
+  jvmArgs = ["-DterracottaConfigUrl=${terracottaConfigUrl}","-Dcom.tc.productkey.path=${terracottaLicenseKey}"]
 }
 
 
 task startSearch << {
   ant.java(classname: 'com.darinpope.SearchMain', fork: true, classpath: "${sourceSets.main.runtimeClasspath.asPath}") {
     jvmarg(value: "-Drole=none")
-    jvmarg(value: "-DterracottaConfigUrl=localhost:9510")
-    jvmarg(value: "-Dcom.tc.productkey.path=/Users/dpope/Tools/Terracotta/terracotta-license.key")
+    jvmarg(value: "-DterracottaConfigUrl=${terracottaConfigUrl}")
+    jvmarg(value: "-Dcom.tc.productkey.path=${terracottaLicenseKey}")
   }
 }
 
 task startJob << {
   ant.java(classname: 'com.darinpope.SchedulerMain', fork: true, classpath: "${sourceSets.main.runtimeClasspath.asPath}") {
     jvmarg(value: "-Drole=none")
-    jvmarg(value: "-DterracottaConfigUrl=localhost:9510")
-    jvmarg(value: "-Dcom.tc.productkey.path=/Users/dpope/Tools/Terracotta/terracotta-license.key")
+    jvmarg(value: "-DterracottaConfigUrl=${terracottaConfigUrl}")
+    jvmarg(value: "-Dcom.tc.productkey.path=${terracottaLicenseKey}")
   }
 }
 
@@ -39,8 +41,8 @@ task startScheduler1 << {
   ant.java(classname: 'com.darinpope.WorkerMain', fork: true, classpath: "${sourceSets.main.runtimeClasspath.asPath}") {
     jvmarg(value: "-Drole=scheduler")
     jvmarg(value: "-DqueueName=scheduler1QueueName")
-    jvmarg(value: "-DterracottaConfigUrl=localhost:9510")
-    jvmarg(value: "-Dcom.tc.productkey.path=/Users/dpope/Tools/Terracotta/terracotta-license.key")
+    jvmarg(value: "-DterracottaConfigUrl=${terracottaConfigUrl}")
+    jvmarg(value: "-Dcom.tc.productkey.path=${terracottaLicenseKey}")
   }
 }
 
@@ -49,8 +51,8 @@ task startWorker1 << {
       jvmarg(value: "-Drole=worker")
       jvmarg(value: "-DnodeName=worker1")
       jvmarg(value: "-DqueueName=worker1Queue")
-      jvmarg(value: "-DterracottaConfigUrl=localhost:9510")
-      jvmarg(value: "-Dcom.tc.productkey.path=/Users/dpope/Tools/Terracotta/terracotta-license.key")
+      jvmarg(value: "-DterracottaConfigUrl=${terracottaConfigUrl}")
+      jvmarg(value: "-Dcom.tc.productkey.path=${terracottaLicenseKey}")
   }
 }
 
@@ -59,8 +61,8 @@ task startWorker2 << {
         jvmarg(value: "-Drole=worker")
         jvmarg(value: "-DnodeName=worker2")
         jvmarg(value: "-DqueueName=worker2Queue")
-        jvmarg(value: "-DterracottaConfigUrl=localhost:9510")
-        jvmarg(value: "-Dcom.tc.productkey.path=/Users/dpope/Tools/Terracotta/terracotta-license.key")
+        jvmarg(value: "-DterracottaConfigUrl=${terracottaConfigUrl}")
+        jvmarg(value: "-Dcom.tc.productkey.path=${terracottaLicenseKey}")
     }
 }
 
@@ -69,8 +71,8 @@ task startWorker3 << {
         jvmarg(value: "-Drole=worker")
         jvmarg(value: "-DnodeName=worker3")
         jvmarg(value: "-DqueueName=worker3Queue")
-        jvmarg(value: "-DterracottaConfigUrl=localhost:9510")
-        jvmarg(value: "-Dcom.tc.productkey.path=/Users/dpope/Tools/Terracotta/terracotta-license.key")
+        jvmarg(value: "-DterracottaConfigUrl=${terracottaConfigUrl}")
+        jvmarg(value: "-Dcom.tc.productkey.path=${terracottaLicenseKey}")
     }
 }
 
