@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+    xmlns:jdbc="http://www.springframework.org/schema/jdbc"
+    xmlns:ehcache="http://ehcache-spring-annotations.googlecode.com/svn/schema/ehcache-spring"
+    xmlns:mockito="http://www.mockito.org/spring/mockito"
+	xsi:schemaLocation="
+	  http://www.springframework.org/schema/beans
+	  http://www.springframework.org/schema/beans/spring-beans.xsd
+	  http://www.springframework.org/schema/context
+	  http://www.springframework.org/schema/context/spring-context-3.0.xsd
+	  http://www.springframework.org/schema/jdbc
+	  http://www.springframework.org/schema/jdbc/spring-jdbc-3.0.xsd
+      http://ehcache-spring-annotations.googlecode.com/svn/schema/ehcache-spring
+      http://ehcache-spring-annotations.googlecode.com/svn/schema/ehcache-spring/ehcache-spring-1.1.xsd
+      http://www.mockito.org/spring/mockito
+      http://www.mockito.org/spring/mockito.xsd">
+	<context:annotation-config/>
+	<context:component-scan base-package="com.darinpope"/>
+
+    <mockito:mock id="toolkit" class="org.terracotta.api.ClusteringToolkitExtension" />
+
+
+    <jdbc:embedded-database id="dataSource" >
+   		<jdbc:script location="classpath:schema.sql"/>
+        <jdbc:script location="classpath:data.sql"/>
+    </jdbc:embedded-database>
+
+    <bean id="countryDao" class="com.darinpope.dao.impl.CountryDaoImpl"
+          p:dataSource-ref="dataSource" />
+
+    <bean id="playerMatchDao" class="com.darinpope.dao.impl.PlayerMatchDaoImpl"
+          p:dataSource-ref="dataSource" />
+
+    <bean id="playerDao" class="com.darinpope.dao.impl.PlayerDaoImpl"
+          p:dataSource-ref="dataSource" />
+
+    <bean id="matchDao" class="com.darinpope.dao.impl.MatchDaoImpl"
+          p:dataSource-ref="dataSource" />
+
+    <ehcache:annotation-driven cache-manager="cacheManager" />
+    <bean id="cacheManager" class="org.springframework.cache.ehcache.EhCacheManagerFactoryBean"
+        p:configLocation="ehcache.xml" />
+    <bean id="schedulerInfoCache" class="org.springframework.cache.ehcache.EhCacheFactoryBean"
+          p:cacheManager-ref="cacheManager"
+          p:cacheName="SchedulerInfoCache" />
+    <bean id="workerInfoCache" class="org.springframework.cache.ehcache.EhCacheFactoryBean"
+          p:cacheManager-ref="cacheManager"
+          p:cacheName="WorkerInfoCache" />
+    <bean id="jobStatusCache" class="org.springframework.cache.ehcache.EhCacheFactoryBean"
+          p:cacheManager-ref="cacheManager"
+          p:cacheName="JobStatusCache" />
+    <bean id="playerCache" class="org.springframework.cache.ehcache.EhCacheFactoryBean"
+          p:cacheManager-ref="cacheManager"
+          p:cacheName="PlayerCache" />
+    <bean id="matchCache" class="org.springframework.cache.ehcache.EhCacheFactoryBean"
+          p:cacheManager-ref="cacheManager"
+          p:cacheName="MatchCache" />
+    <bean id="playerMatchCache" class="org.springframework.cache.ehcache.EhCacheFactoryBean"
+          p:cacheManager-ref="cacheManager"
+          p:cacheName="PlayerMatchCache" />
+
+</beans>

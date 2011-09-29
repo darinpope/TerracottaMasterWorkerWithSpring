@@ -6,18 +6,20 @@ apply plugin: 'application'
 springVersion = "3.0.6.RELEASE"
 slf4jVersion = "1.6.1"
 ehcacheVersion = "2.4.5"
+ehcacheSpringAnnotationsVersion = "1.2.0"
 terracottaToolkitVersion = "1.3"
 terracottaCommonVersion = "3.2.0"
 terracottaLicenseKey = "/Users/dpope/Tools/Terracotta/terracotta-license.key"
 terracottaConfigUrl = "localhost:9510"
 
 repositories {
+  mavenLocal()
   mavenCentral()
   mavenRepo urls: ["http://www.terracotta.org/download/reflector/releases", "http://www.terracotta.org/download/reflector/snapshots"]
 }
 
 test {
-  jvmArgs = ["-DterracottaConfigUrl=${terracottaConfigUrl}","-Dcom.tc.productkey.path=${terracottaLicenseKey}"]
+  jvmArgs = ["-DterracottaConfigUrl=${terracottaConfigUrl}","-Dcom.tc.productkey.path=${terracottaLicenseKey}","-DterracottaClustered=false"]
 }
 
 
@@ -26,6 +28,7 @@ task startSearch << {
     jvmarg(value: "-Drole=none")
     jvmarg(value: "-DterracottaConfigUrl=${terracottaConfigUrl}")
     jvmarg(value: "-Dcom.tc.productkey.path=${terracottaLicenseKey}")
+    jvmarg(value: "-DterracottaClustered=true")
   }
 }
 
@@ -34,6 +37,7 @@ task startJob << {
     jvmarg(value: "-Drole=none")
     jvmarg(value: "-DterracottaConfigUrl=${terracottaConfigUrl}")
     jvmarg(value: "-Dcom.tc.productkey.path=${terracottaLicenseKey}")
+    jvmarg(value: "-DterracottaClustered=true")
   }
 }
 
@@ -43,6 +47,7 @@ task startScheduler1 << {
     jvmarg(value: "-DqueueName=scheduler1QueueName")
     jvmarg(value: "-DterracottaConfigUrl=${terracottaConfigUrl}")
     jvmarg(value: "-Dcom.tc.productkey.path=${terracottaLicenseKey}")
+    jvmarg(value: "-DterracottaClustered=true")
   }
 }
 
@@ -53,6 +58,7 @@ task startWorker1 << {
       jvmarg(value: "-DqueueName=worker1Queue")
       jvmarg(value: "-DterracottaConfigUrl=${terracottaConfigUrl}")
       jvmarg(value: "-Dcom.tc.productkey.path=${terracottaLicenseKey}")
+      jvmarg(value: "-DterracottaClustered=true")
   }
 }
 
@@ -63,6 +69,7 @@ task startWorker2 << {
         jvmarg(value: "-DqueueName=worker2Queue")
         jvmarg(value: "-DterracottaConfigUrl=${terracottaConfigUrl}")
         jvmarg(value: "-Dcom.tc.productkey.path=${terracottaLicenseKey}")
+        jvmarg(value: "-DterracottaClustered=true")
     }
 }
 
@@ -73,6 +80,7 @@ task startWorker3 << {
         jvmarg(value: "-DqueueName=worker3Queue")
         jvmarg(value: "-DterracottaConfigUrl=${terracottaConfigUrl}")
         jvmarg(value: "-Dcom.tc.productkey.path=${terracottaLicenseKey}")
+        jvmarg(value: "-DterracottaClustered=true")
     }
 }
 
@@ -85,8 +93,9 @@ dependencies {
   compile "org.terracotta:terracotta-toolkit-$terracottaToolkitVersion-runtime-ee:$terracottaCommonVersion"
   compile "log4j:log4j:1.2.16"
   compile "commons-lang:commons-lang:2.6"
-  compile ("com.googlecode.ehcache-spring-annotations:ehcache-spring-annotations:1.1.3") {
+  compile ("com.googlecode.ehcache-spring-annotations:ehcache-spring-annotations:$ehcacheSpringAnnotationsVersion") {
     exclude group:"net.sf.ehcache", module:"ehcache-core", version:"2.2.0"
+    exclude group:"org.slf4j", module:"slf4j-api", version:"1.6.2"
   }
   runtime "net.sf.ehcache:ehcache-terracotta-ee:$ehcacheVersion"
   runtime "org.slf4j:slf4j-api:$slf4jVersion"
@@ -94,6 +103,8 @@ dependencies {
   runtime "org.hsqldb:hsqldb:2.2.4"
   testCompile "org.springframework:spring-test:$springVersion"
   testCompile "junit:junit:4.8.2"
+  testCompile "org.mockito:mockito-all:1.8.5"
+  testCompile "org.kubek2k.mockito.spring:springockito:1.0.0-SNAPSHOT"
 }
 
 task wrapper(type: Wrapper) {

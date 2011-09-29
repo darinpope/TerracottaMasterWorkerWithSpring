@@ -54,6 +54,8 @@ public class Worker implements InitializingBean, DisposableBean {
             Element element =  jobStatusCache.get(jobId);
             if(element != null) {
                 jobStatus = (JobStatus) element.getValue();
+                //TODO: do work
+
                 jobStatus.setJobState("INPROCESS");
                 jobStatusCache.put(new Element(jobId,jobStatus));
                 BlockingQueue<byte[]> q = getSchedulerQueue(jobStatus.getMasterQueueName());

@@ -11,7 +11,6 @@ import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
 
-@Component
 public class TerracottaClusterTopologyListener implements InitializingBean {
     private static final Logger LOGGER = Logger.getLogger(TerracottaClusterTopologyListener.class);
 

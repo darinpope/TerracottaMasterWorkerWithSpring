@@ -6,7 +6,7 @@
         timeToIdleSeconds="0"
         maxElementsInMemory="1000"
         maxElementsOnDisk="0">
-        <terracotta consistency="strong" concurrency="256" />
+        <terracotta clustered="${terracottaClustered}" consistency="strong" concurrency="256" />
     </cache>
     <cache name="WorkerInfoCache"
         eternal="true"
@@ -14,7 +14,7 @@
         timeToIdleSeconds="0"
         maxElementsInMemory="1000"
         maxElementsOnDisk="2000">
-        <terracotta consistency="strong" concurrency="256" />
+        <terracotta clustered="${terracottaClustered}" consistency="strong" concurrency="256" />
     </cache>
     <cache name="SchedulerInfoCache"
         eternal="true"
@@ -22,25 +22,25 @@
         timeToIdleSeconds="0"
         maxElementsInMemory="1000"
         maxElementsOnDisk="2000">
-        <terracotta consistency="strong" concurrency="256" />
+        <terracotta clustered="${terracottaClustered}" consistency="strong" concurrency="256" />
     </cache>
     <cache name="MatchCache"
         eternal="false"
         maxElementsInMemory="5000"
         maxElementsOnDisk="125000">
-        <terracotta consistency="strong" concurrency="256" />
+        <terracotta clustered="${terracottaClustered}" consistency="strong" concurrency="256" />
     </cache>
     <cache name="PlayerCache"
         eternal="false"
         maxElementsInMemory="5000"
         maxElementsOnDisk="125000">
-        <terracotta consistency="strong" concurrency="256" />
+        <terracotta clustered="${terracottaClustered}" consistency="strong" concurrency="256" />
     </cache>
     <cache name="PlayerMatchCache"
         eternal="false"
         maxElementsInMemory="5000"
         maxElementsOnDisk="500000">
-        <terracotta consistency="strong" concurrency="256" />
+        <terracotta clustered="${terracottaClustered}" consistency="strong" concurrency="256" />
         <searchable keys="false" values="false">
             <searchAttribute name="playerId" />
             <searchAttribute name="matchId" />
@@ -62,7 +62,7 @@
                 retryAttemptDelaySeconds="2">
             <cacheWriterFactory class="com.darinpope.cache.writer.CsvWriterFactory"/>
         </cacheWriter>
-        <terracotta consistency="strong" concurrency="256" />
+        <terracotta clustered="${terracottaClustered}" consistency="strong" concurrency="256" />
     </cache>
 
 </ehcache>
